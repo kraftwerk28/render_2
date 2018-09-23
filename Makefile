@@ -1,24 +1,26 @@
-all: util.o test_util.o sfml_visualizer.o file_parser.o
-	g++ main.cpp \
+all: bin/main.o bin/file_parser.o bin/sfml_visualizer.o bin/util.o bin/util.o bin/test_util.o
+	g++ -o bin/render2 \
+	bin/main.o \
 	bin/util.o \
 	bin/sfml_visualizer.o \
 	bin/file_parser.o \
 	bin/test_util.o \
-	-o bin/render2 \
-	-lsfml-system -lsfml-window -lsfml-graphics
+	-lsfml-system -lsfml-window -lsfml-graphics -lpthread -lX11
 
-# main
-util.o: src/util.cpp
+bin/main.o: main.cpp
+	g++ -c main.cpp -o bin/main.o
+
+bin/util.o: src/util.cpp
 	g++ -c src/util.cpp -o bin/util.o
 
-sfml_visualizer.o: src/sfml_visualizer.cpp
+bin/sfml_visualizer.o: src/sfml_visualizer.cpp
 	g++ -c src/sfml_visualizer.cpp -o bin/sfml_visualizer.o
 
-file_parser.o: src/file_parser.cpp
+bin/file_parser.o: src/file_parser.cpp
 	g++ -c src/file_parser.cpp -o bin/file_parser.o
 
 # tests
-test_util.o: tests/util_test.cpp
+bin/test_util.o: tests/util_test.cpp
 	g++ -c tests/util_test.cpp -o bin/test_util.o
 
 
