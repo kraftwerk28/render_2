@@ -10,9 +10,6 @@
 #include "../include/file_parser.hpp"
 #include "util.hpp"
 
-class file_parser {
-public:
-    static std::pair<vector3 *, long int> parse(const char *file_path);
-};
+void parse(const char *, obj_data &);
 
 #endif //RENDER_2_FILE_PARSER_HPP

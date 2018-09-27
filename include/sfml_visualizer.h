@@ -7,13 +7,15 @@
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include "../include/util.hpp"
 
 using sf::Window;
 using sf::Event;
 using sf::VideoMode;
 using sf::Vector2i;
 
-class sfml_visualizer {
+class sfml_visualizer
+{
 public:
     static void create_window(unsigned int w = 400, unsigned int h = 400);
 };

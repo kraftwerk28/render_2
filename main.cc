@@ -4,10 +4,13 @@
 #include "include/file_parser.hpp"
 
 int main() {
+    srand(time(nullptr));
+
     std::cout << "---------------\n" << "Render 2" << std::endl;
-//    util_test::test_vector3();
+    obj_data data;
+    util_test::test_vector3();
     sfml_visualizer::create_window();
-    auto info = file_parser::parse("kek");
+    parse("cube.obj", data);
 
     return 0;
 

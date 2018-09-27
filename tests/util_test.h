@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <random>
-#include "../include/util.hpp"
+#include "../include/util.h"
 
 #define log(x) std::cout << x << std::endl;
 

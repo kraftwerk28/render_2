@@ -6,19 +6,30 @@
 #include <unistd.h>
 #include <thread>
 #include <iostream>
+#include <math.h>
 #include <functional>
 
-void fill_pic(sf::Image *image, sf::Texture *texture)
+char randcl()
+{
+    return rand() % 256;
+}
+
+void fill_pic(sf::Image *image, sf::Texture *texture, bool &finished)
 {
     int _to = image->getSize().y * image->getSize().x;
     for (int i = 0; i < image->getSize().x; i++)
     {
         for (int j = 0; j < image->getSize().y; j++)
         {
-            image->setPixel(i, j, sf::Color::Cyan);
-            usleep(20);
+            image->setPixel(i, j, sf::Color(cosf(to_rad(i)) * 255,
+                                            sinf(to_rad(i)) * 255,
+                                            cosf(to_rad(j)) * 255,
+                                            255));
+            usleep(1);
         }
     }
+
+    finished = true;
 }
 
 void sfml_visualizer::create_window(unsigned int w, unsigned int h)
@@ -40,11 +51,9 @@ void sfml_visualizer::create_window(unsigned int w, unsigned int h)
 
     texture->update(*image);
 
-//    auto *th = new sf::Thread([=] { return fill_pic(image, texture); });
-//    th->launch();
-    auto *t = new std::thread(fill_pic, image, texture);
+    bool finished = false;
+    auto *t = new std::thread(fill_pic, image, texture, std::ref(finished));
 //    t->join();
-    t->detach();
 
     while (window->isOpen())
     {
@@ -56,16 +65,26 @@ void sfml_visualizer::create_window(unsigned int w, unsigned int h)
                     window->close();
                     break;
                 case Event::MouseMoved:
-//                    image->setPixel(
-//                        (unsigned int) event.mouseMove.x,
-//                        (unsigned int) event.mouseMove.y,
-//                        sf::Color::Green);
-//                    texture->update(*image);
+                    image->setPixel(
+                        (unsigned int) event.mouseMove.x,
+                        (unsigned int) event.mouseMove.y,
+                        sf::Color::Green);
+                    texture->update(*image);
                     break;
                 default:
                     break;
             }
         }
+        if (finished)
+        {
+            std::cout << "all threads have been joined main thread\n";
+            t->join();
+            break;
+        } else
+        {
+//            std::cout << t->get_id() << " ";
+        }
+
         window->clear();
         texture->update(*image);
         window->draw(*sprite);
@@ -77,5 +96,5 @@ void sfml_visualizer::create_window(unsigned int w, unsigned int h)
     delete image;
     delete texture;
     delete sprite;
-//    delete t;
+    delete t;
 }
