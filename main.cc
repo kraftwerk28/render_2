@@ -1,16 +1,17 @@
 #include <iostream>
-#include "tests/util_test.hpp"
-#include "include/sfml_visualizer.hpp"
-#include "include/file_parser.hpp"
+#include "tests/util_test.h"
+#include "include/sfml_visualizer.h"
+#include "include/file_parser.h"
 
-int main() {
-    srand(time(nullptr));
+int main()
+{
+    srand((unsigned int) time(nullptr));
 
     std::cout << "---------------\n" << "Render 2" << std::endl;
     obj_data data;
-    util_test::test_vector3();
-    sfml_visualizer::create_window();
-    parse("cube.obj", data);
+//    util_test::test_vector3();
+//    sfml_visualizer::create_window();
+    file_parser::parse("cube.obj", data);
 
     return 0;
 

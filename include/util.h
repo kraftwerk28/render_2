@@ -5,7 +5,9 @@
 #ifndef RENDER_2_UTIL_H
 #define RENDER_2_UTIL_H
 
+#include <iostream>
 #include <cmath>
+#include <vector>
 
 float to_rad(float);
 
@@ -15,9 +17,11 @@ struct vector3
 {
     vector3();
 
-    vector3(float &, float &, float &);
-
     vector3(float, float, float);
+
+//    vector3(const float &, const float &, const float &);
+
+    vector3(const vector3 &);
 
     vector3 operator+(vector3 &);
 
@@ -37,12 +41,16 @@ struct vector3
 
     static float angle(vector3 &, vector3 &);
 
+    void print();
+
     float x, y, z;
 };
 
 struct plane
 {
     plane();
+
+    plane(const plane &);
 
     plane(vector3 &, vector3 &, vector3 &);
 
@@ -69,10 +77,8 @@ struct light_source
 
 struct obj_data
 {
-    long int vertices_count;
-    vector3 *vertices;
-    long int planes_count;
-    plane *planes;
+    std::vector<vector3> vectices;
+    std::vector<plane> planes;
 };
 
 #endif //RENDER_2_UTIL_H

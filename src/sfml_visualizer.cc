@@ -2,7 +2,7 @@
 // Created by kraftwerk28 on 22.09.18.
 //
 
-#include "../include/sfml_visualizer.hpp"
+#include "../include/sfml_visualizer.h"
 #include <unistd.h>
 #include <thread>
 #include <iostream>
@@ -21,11 +21,11 @@ void fill_pic(sf::Image *image, sf::Texture *texture, bool &finished)
     {
         for (int j = 0; j < image->getSize().y; j++)
         {
-            image->setPixel(i, j, sf::Color(cosf(to_rad(i)) * 255,
-                                            sinf(to_rad(i)) * 255,
-                                            cosf(to_rad(j)) * 255,
+            image->setPixel(i, j, sf::Color(cosf(i / image->getSize().x * M_2_PI) * 255,
+                                            sinf(i / image->getSize().x * M_2_PI) * 255,
+                                            cosf(j / image->getSize().y * M_2_PI) * 255,
                                             255));
-            usleep(1);
+            usleep(0.5);
         }
     }
 

@@ -2,7 +2,7 @@
 // Created by kraftwerk28 on 22.09.18.
 //
 
-#include "util_test.hpp"
+#include "util_test.h"
 
 #define VECTOR_COUNT 1000000
 

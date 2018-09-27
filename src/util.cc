@@ -2,7 +2,9 @@
 // Created by kraftwerk28 on 22.09.18.
 //
 
-#include "../include/util.hpp"
+#include "../include/util.h"
+
+using namespace std;
 
 float to_rad(float deg)
 {
@@ -19,11 +21,17 @@ float to_deg(float rad)
 vector3::vector3()
     : x(0), y(0), z(0) {}
 
-vector3::vector3(float &_x, float &_y, float &_z)
+vector3::vector3(const float _x, const float _y, const float _z)
     : x(_x), y(_y), z(_z) {}
 
-vector3::vector3(float _x, float _y, float _z)
-    : x(_x), y(_y), z(_z) {}
+//vector3::vector3(const float &_x, const float &_y, const float &_z)
+//    : x(_x), y(_y), z(_z) {}
+
+vector3::vector3(const vector3 &vec)
+    : x(vec.x), y(vec.y), z(vec.z)
+{
+    cout << "copy call\n";
+}
 
 vector3 vector3::operator+(vector3 &vct)
 {
@@ -37,7 +45,7 @@ vector3 vector3::operator-(vector3 &vct)
 
 vector3 vector3::operator*(float &num)
 {
-    return vector3();
+    return vector3(x * num, y * num, z * num);
 }
 
 vector3 vector3::operator/(float &num)
@@ -85,6 +93,12 @@ float vector3::angle(vector3 &vct1, vector3 &vct2)
     );
 }
 
+void vector3::print()
+{
+    cout << x << " " << y << " " << z << endl;
+}
+
+
 // endregion
 
 
@@ -95,6 +109,9 @@ plane::plane()
 
 plane::plane(vector3 &_v1, vector3 &_v2, vector3 &_v3)
     : v1(&_v1), v2(&_v2), v3(&_v3) {}
+
+plane::plane(const plane &p)
+    : v1(p.v1), v2(p.v2), v3(p.v3) {}
 // endregion
 
 
