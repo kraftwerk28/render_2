@@ -6,15 +6,11 @@
 
 #define VECTOR_COUNT 1000000
 
-void util_test::test_vector3() {
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_real_distribution<float> r(0.0, 10.0);
+using namespace std;
 
-    for (int i = 0; i < VECTOR_COUNT; i++) {
-        auto *z = new vector3(r(mt), r(mt), r(mt));
-        std::cout << z->x << " " << z->y << " " << z->z << std::endl;
-        delete z;
-    }
-
+void util_test::test_vector3()
+{
+    vector3 v1(3, 8, 10), v2(6, 7, -11);
+    cout << (vector3::cross(v1, v2) == vector3(-158, 93, -27)) << endl;
+    cout << (vector3(98123, -1237, 18).norm().length() == 1) << endl;
 }

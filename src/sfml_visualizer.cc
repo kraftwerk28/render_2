@@ -21,10 +21,11 @@ void fill_pic(sf::Image *image, sf::Texture *texture, bool &finished)
     {
         for (int j = 0; j < image->getSize().y; j++)
         {
-            image->setPixel(i, j, sf::Color(cosf(i / image->getSize().x * M_2_PI) * 255,
-                                            sinf(i / image->getSize().x * M_2_PI) * 255,
-                                            cosf(j / image->getSize().y * M_2_PI) * 255,
-                                            255));
+            image->setPixel(i, j, sf::Color(
+                cosf(i / image->getSize().x * M_2_PI) * 255,
+                sinf(i / image->getSize().x * M_2_PI) * 255,
+                cosf(j / image->getSize().y * M_2_PI) * 255,
+                255));
             usleep(0.5);
         }
     }
@@ -32,7 +33,9 @@ void fill_pic(sf::Image *image, sf::Texture *texture, bool &finished)
     finished = true;
 }
 
-void sfml_visualizer::create_window(unsigned int w, unsigned int h)
+void
+sfml_visualizer::create_window(unsigned int w, unsigned int h, sf::Image *image,
+                               bool *close_trigger)
 {
     auto *window = new sf::RenderWindow(sf::VideoMode(w, h), "render_2");
     Vector2i pos(
@@ -43,17 +46,12 @@ void sfml_visualizer::create_window(unsigned int w, unsigned int h)
     window->setActive(false);
     Event event = Event();
 
-    auto *image = new sf::Image();
-    image->create(w, h);
     auto *texture = new sf::Texture();
     texture->create(w, h);
     auto *sprite = new sf::Sprite(*texture);
 
     texture->update(*image);
 
-    bool finished = false;
-    auto *t = new std::thread(fill_pic, image, texture, std::ref(finished));
-//    t->join();
 
     while (window->isOpen())
     {
@@ -63,28 +61,19 @@ void sfml_visualizer::create_window(unsigned int w, unsigned int h)
             {
                 case Event::Closed:
                     window->close();
+                    *close_trigger = true;
                     break;
                 case Event::MouseMoved:
-                    image->setPixel(
-                        (unsigned int) event.mouseMove.x,
-                        (unsigned int) event.mouseMove.y,
-                        sf::Color::Green);
-                    texture->update(*image);
+//                    image->setPixel(
+//                        (unsigned int) event.mouseMove.x,
+//                        (unsigned int) event.mouseMove.y,
+//                        sf::Color::Green);
+//                    texture->update(*image);
                     break;
                 default:
                     break;
             }
         }
-        if (finished)
-        {
-            std::cout << "all threads have been joined main thread\n";
-            t->join();
-            break;
-        } else
-        {
-//            std::cout << t->get_id() << " ";
-        }
-
         window->clear();
         texture->update(*image);
         window->draw(*sprite);
@@ -96,5 +85,4 @@ void sfml_visualizer::create_window(unsigned int w, unsigned int h)
     delete image;
     delete texture;
     delete sprite;
-    delete t;
 }

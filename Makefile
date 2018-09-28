@@ -1,6 +1,7 @@
-all: bin/main.o bin/file_parser.o bin/sfml_visualizer.o bin/util.o bin/util.o bin/test_util.o
+all: bin/main.o bin/ray_tracer.o bin/file_parser.o bin/sfml_visualizer.o bin/util.o bin/util.o bin/test_util.o
 	g++ -o bin/render2 \
 	bin/main.o \
+	bin/ray_tracer.o \
 	bin/util.o \
 	bin/sfml_visualizer.o \
 	bin/file_parser.o \
@@ -18,6 +19,9 @@ bin/sfml_visualizer.o: src/sfml_visualizer.cc
 
 bin/file_parser.o: src/file_parser.cc
 	g++ -c src/file_parser.cc -o bin/file_parser.o
+
+bin/ray_tracer.o: src/ray_tracer.cc
+	g++ -c src/ray_tracer.cc -o bin/ray_tracer.o
 
 # tests
 bin/test_util.o: tests/util_test.cc

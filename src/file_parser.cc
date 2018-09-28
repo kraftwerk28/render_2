@@ -1,19 +1,19 @@
-#include <utility>
-
 //
 // Created by kraftwerk28 on 22.09.18.
 //
 
 #include "../include/file_parser.h"
 
-#define VECTOR_SYMBOL 'v'
-#define PLANE_SYMBOL 'f'
+#define VECTOR_DESCR "v"
+#define PLANE_DESCR "f"
 #define WHITESPACE ' '
+#define SLASH '/'
 
 using std::string;
 using std::vector;
 using std::cout;
 using std::endl;
+using std::stoi;
 
 void file_parser::parse(const char *path, obj_data &data)
 {
@@ -22,26 +22,18 @@ void file_parser::parse(const char *path, obj_data &data)
 
     if (file_stream.is_open())
     {
-        std::cout << "opening file...\n";
+        std::cout << "Opening file...\n";
         while (std::getline(file_stream, line))
         {
-            switch (line[0])
+            string descriptor = line.substr(0, line.find_first_of(WHITESPACE));
+            if (descriptor == VECTOR_DESCR)
             {
-                case VECTOR_SYMBOL:
-                {
-                    vector3 v = file_parser::parse_vector(line);
-                    data.vectices.push_back(v);
-                    break;
-                }
-
-                case PLANE_SYMBOL:
-                {
-
-                    break;
-                }
-
-                default:
-                    break;
+                vector3 v = file_parser::parse_vector(line);
+                data.vertices.push_back(v);
+            } else if (descriptor == PLANE_DESCR)
+            {
+                plane p = file_parser::parse_plane(line, &data);
+                data.planes.push_back(p);
             }
         }
     } else
@@ -49,20 +41,41 @@ void file_parser::parse(const char *path, obj_data &data)
         cout << "File does not exist\n";
     }
 
+    data.planes.shrink_to_fit();
+    data.vertices.shrink_to_fit();
+
+    cout << "Parsing finished\n";
+    file_stream.close();
 
 }
 
-vector3 file_parser::parse_vector(string str)
+vector3 file_parser::parse_vector(string &str)
 {
-    const auto spl = splitstr(std::move(str), ' ');
+    const auto spl = splitstr(str, WHITESPACE);
 
-    const auto sx = (float) strtod(spl[1].c_str(), nullptr);
-    const auto sy = (float) strtod(spl[2].c_str(), nullptr);
-    const auto sz = (float) strtod(spl[3].c_str(), nullptr);
+    const auto
+        sx = (float) strtod(spl[1].c_str(), nullptr),
+        sy = (float) strtod(spl[2].c_str(), nullptr),
+        sz = (float) strtod(spl[3].c_str(), nullptr);
 
     cout << sx << " " << sy << " " << sz << endl;
 
     return vector3(sx, sy, sz);
+}
+
+plane file_parser::parse_plane(std::string &str, obj_data *data)
+{
+    const auto spl = splitstr(str, WHITESPACE);
+    unsigned int v_inds[3];
+
+    for (size_t i = 1; i < 4; i++)
+    {
+        v_inds[i - 1] = (unsigned int) stoi(splitstr(spl[i], SLASH)[0]);
+    }
+
+    return plane(data->vertices[v_inds[0]],
+                 data->vertices[v_inds[1]],
+                 data->vertices[v_inds[2]]);
 }
 
 std::vector<std::string> file_parser::splitstr(string str, const char delim)
@@ -82,6 +95,6 @@ std::vector<std::string> file_parser::splitstr(string str, const char delim)
 
     }
 
-    result.shrink_to_fit(); // maybe remove
+//    result.shrink_to_fit(); // maybe remove
     return result;
 }

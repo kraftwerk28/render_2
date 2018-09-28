@@ -16,6 +16,76 @@ float to_deg(float rad)
     return (float) (rad * 180 / M_PI);
 }
 
+std::tuple<bool, vector3, vector3>
+intersection(vector3 &origin, vector3 &direction, plane &facet)
+{
+    const float E = 1e-5f;
+    float
+        x0 = facet.v1->x,
+        y0 = facet.v1->y,
+        z0 = facet.v1->z,
+        x1 = facet.v2->x,
+        y1 = facet.v2->y,
+        z1 = facet.v2->z,
+        x2 = facet.v3->x,
+        y2 = facet.v3->y,
+        z2 = facet.v3->z,
+
+        A = (y1 - y0) * (z2 - z0) - (y2 - y0) * (z1 - z0),
+        B = (x2 - x0) * (z1 - z0) - (x1 - x0) * (z2 - z0),
+        C = (x1 - x0) * (y2 - y0) - (y1 - y0) * (x2 - x0),
+        D =
+        x0 * ((y2 - y0) * (z1 - z0) - (y1 - y0) * (z2 - z0)) +
+        y0 * ((x1 - x0) * (z2 - z0) - (x2 - x0) * (z1 - z0)) +
+        z0 * ((y1 - y0) * (x2 - x0) - (x1 - x0) * (y2 - y0)),
+        t =
+        -(A * origin.x + B * origin.y + C * origin.z + D) /
+        (A * direction.x + B * direction.y + C * direction.z),
+
+        x = t * direction.x + origin.x,
+        y = t * direction.y + origin.y,
+        z = t * direction.z + origin.z;
+
+
+    vector3 normal(A, B, C);
+    normal = normal.norm();
+
+    vector3 res(x, y, z);
+    vector3 edge1 = *facet.v2 - *facet.v1,
+        edge2 = *facet.v3 - *facet.v1,
+        h = vector3::cross(direction, edge2);
+
+    float a = vector3::dot(edge1, h);
+
+    if (a > -E && a < E)
+    {
+        return {false, res, normal};
+    }
+
+
+    float f = 1 / a;
+    vector3 s = origin - *facet.v1;
+    float u = f * vector3::dot(s, h);
+
+    if (u < 0.0 || u > 1.0)
+    {
+        return {false, res, normal};
+    }
+
+
+    vector3 q = vector3::cross(s, edge1);
+    float v = f * vector3::dot(direction, q);
+    if (v < 0.0 || u + v > 1.0)
+    {
+        return {false, res, normal};
+    }
+
+
+    float tt = f * vector3::dot(edge2, q);
+
+    return {tt > E, res, normal};
+}
+
 // region vector3
 
 vector3::vector3()
@@ -30,30 +100,35 @@ vector3::vector3(const float _x, const float _y, const float _z)
 vector3::vector3(const vector3 &vec)
     : x(vec.x), y(vec.y), z(vec.z)
 {
-    cout << "copy call\n";
+//    cout << "copy call\n";
 }
 
-vector3 vector3::operator+(vector3 &vct)
+vector3 vector3::operator+(const vector3 &vct)
 {
     return vector3(x + vct.x, y + vct.y, z + vct.z);
 }
 
-vector3 vector3::operator-(vector3 &vct)
+vector3 vector3::operator-(const vector3 &vct)
 {
     return vector3(x - vct.x, y - vct.y, z - vct.z);
 }
 
-vector3 vector3::operator*(float &num)
+vector3 vector3::operator*(const float &num)
 {
     return vector3(x * num, y * num, z * num);
 }
 
-vector3 vector3::operator/(float &num)
+vector3 vector3::operator/(const float &num)
 {
     return vector3(x / num, y / num, z / num);
 }
 
-vector3 vector3::cross(vector3 &vct1, vector3 &vct2)
+bool vector3::operator==(const vector3 &v)
+{
+    return x == v.x && y == v.y && z == v.z;
+}
+
+vector3 vector3::cross(const vector3 &vct1, const vector3 &vct2)
 {
     return vector3(
         vct1.y * vct2.z - vct1.z * vct2.y,
@@ -62,7 +137,7 @@ vector3 vector3::cross(vector3 &vct1, vector3 &vct2)
     );
 }
 
-float vector3::dot(vector3 &vct1, vector3 &vct2)
+float vector3::dot(const vector3 &vct1, const vector3 &vct2)
 {
     return
         vct1.x * vct2.x +
@@ -78,11 +153,7 @@ vector3 vector3::norm()
 
 float vector3::length()
 {
-    return (float) std::sqrt(
-        std::pow(x, 2.0) +
-        std::pow(y, 2.0) +
-        std::pow(z, 2.0)
-    );
+    return (float) std::sqrt(x * x + y * y + z * z);
 }
 
 float vector3::angle(vector3 &vct1, vector3 &vct2)
@@ -97,7 +168,6 @@ void vector3::print()
 {
     cout << x << " " << y << " " << z << endl;
 }
-
 
 // endregion
 
@@ -117,18 +187,17 @@ plane::plane(const plane &p)
 
 // region camera
 
-
-// endregion
-
-
-camera::camera(vector3 _pos, vector3 _dir, int _res_x = 512, int _res_y = 512,
-               float _fov = 60, float _size = 1)
+camera::camera(vector3 _pos, vector3 _dir, int _res_x, int _res_y,
+               float _fov, float _size)
     : position(_pos),
       look_direction(_dir),
       resolution_x(_res_x),
       resolution_y(_res_y),
       fov(_fov),
-      size(_size) {}
+      size(_size),
+      upwards(vector3(0, 0, 1)) {}
+
+// endregion
 
 light_source::light_source()
 {

@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <tuple>
 
 float to_rad(float);
 
@@ -23,17 +24,19 @@ struct vector3
 
     vector3(const vector3 &);
 
-    vector3 operator+(vector3 &);
+    vector3 operator+(const vector3 &);
 
-    vector3 operator-(vector3 &);
+    vector3 operator-(const vector3 &);
 
-    vector3 operator*(float &);
+    vector3 operator*(const float &);
 
-    vector3 operator/(float &);
+    vector3 operator/(const float &);
 
-    static vector3 cross(vector3 &, vector3 &);
+    bool operator==(const vector3 &);
 
-    static float dot(vector3 &, vector3 &);
+    static vector3 cross(const vector3 &, const vector3 &);
+
+    static float dot(const vector3 &, const vector3 &);
 
     vector3 norm();
 
@@ -64,7 +67,8 @@ struct camera
     int resolution_x, resolution_y;
     float fov, size;
 
-    camera(vector3, vector3, int, int, float, float);
+    camera(vector3 _pos, vector3 _dir, int _res_x = 512, int _res_y = 512,
+           float _fov = 60, float _size = 1);
 };
 
 struct light_source
@@ -77,8 +81,11 @@ struct light_source
 
 struct obj_data
 {
-    std::vector<vector3> vectices;
+    std::vector<vector3> vertices;
     std::vector<plane> planes;
 };
+
+std::tuple<bool, vector3, vector3>
+intersection(vector3 &origin, vector3 &direction, plane &facet);
 
 #endif //RENDER_2_UTIL_H

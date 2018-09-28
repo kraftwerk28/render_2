@@ -17,7 +17,9 @@ using sf::Vector2i;
 class sfml_visualizer
 {
 public:
-    static void create_window(unsigned int w = 400, unsigned int h = 400);
+    static void
+    create_window(unsigned int w, unsigned int h, sf::Image *image,
+                  bool *close_trigger);
 };
 
 

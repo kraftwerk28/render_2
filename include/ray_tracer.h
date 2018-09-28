@@ -8,7 +8,12 @@
 #include <SFML/Graphics/Image.hpp>
 #include "util.h"
 #include <math.h>
+#include <tuple>
 
-static void trace_to_image(obj_data *, camera *, sf::Image *);
+class ray_tracer
+{
+public:
+    static void trace_to_image(obj_data *, camera *, sf::Image *);
+};
 
 #endif //RENDER_2_RAY_TRACER_HPP

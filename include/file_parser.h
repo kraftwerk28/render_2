@@ -14,9 +14,10 @@
 class file_parser
 {
 private:
-    static std::vector<std::string> splitstr(std::string, const char);
+    static std::vector<std::string> splitstr(std::string, char);
 
-    static vector3 parse_vector(std::string);
+    static vector3 parse_vector(std::string &);
+    static plane parse_plane(std::string &, obj_data *);
 
 public:
     static void parse(const char *, obj_data &);
