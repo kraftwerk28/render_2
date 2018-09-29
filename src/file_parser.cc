@@ -73,9 +73,9 @@ plane file_parser::parse_plane(std::string &str, obj_data *data)
         v_inds[i - 1] = (unsigned int) stoi(splitstr(spl[i], SLASH)[0]);
     }
 
-    return plane(data->vertices[v_inds[0]],
-                 data->vertices[v_inds[1]],
-                 data->vertices[v_inds[2]]);
+    return plane(data->vertices[v_inds[0] - 1],
+                 data->vertices[v_inds[1] - 1],
+                 data->vertices[v_inds[2] - 1]);
 }
 
 std::vector<std::string> file_parser::splitstr(string str, const char delim)

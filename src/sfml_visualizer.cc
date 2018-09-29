@@ -26,7 +26,7 @@ void fill_pic(sf::Image *image, sf::Texture *texture, bool &finished)
                 sinf(i / image->getSize().x * M_2_PI) * 255,
                 cosf(j / image->getSize().y * M_2_PI) * 255,
                 255));
-            usleep(0.5);
+            usleep(static_cast<__useconds_t>(0.5));
         }
     }
 
@@ -82,7 +82,6 @@ sfml_visualizer::create_window(unsigned int w, unsigned int h, sf::Image *image,
     }
 
     delete window;
-    delete image;
     delete texture;
     delete sprite;
 }

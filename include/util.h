@@ -40,9 +40,9 @@ struct vector3
 
     vector3 norm();
 
-    float length();
+    float length() const;
 
-    static float angle(vector3 &, vector3 &);
+    static float angle(const vector3 &, const vector3 &);
 
     void print();
 

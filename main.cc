@@ -11,7 +11,8 @@
 
 int main()
 {
-    bool *window_closed = new bool(false);
+    auto *window_closed = new bool(false);
+//    bool window_closed = false;
 
     if (TEST_MODE)
     {
@@ -20,26 +21,32 @@ int main()
     }
 
     srand((unsigned int) time(nullptr));
+    const unsigned int w = 400, h = 400;
 
     auto *img = new sf::Image();
-    img->create(400, 400);
+    img->create(w, h);
 
     std::cout << "---------------\n" << "Render 2" << std::endl;
 
     auto *data = new obj_data();
-    auto *camera1 = new camera(vector3(-2, 0, 0), vector3(1, 0, 0), 400, 400);
+    auto *camera1 = new camera(vector3(5, 0.5f, 0), vector3(-1, -0.2f, -0.1f), w, h,
+                               60);
 
-    file_parser::parse("cube.obj", *data);
+    file_parser::parse("sphere.obj", *data);
 
     std::thread thread;
     thread = std::thread(
-        [=] { sfml_visualizer::create_window(400, 400, img, window_closed); });
+        [=] {
+            sfml_visualizer::create_window(w, h, img, window_closed);
+        });
 
     ray_tracer::trace_to_image(data, camera1, img);
     img->saveToFile("result.png");
+    std::cout << "Image saved!\n";
 
     thread.join();
     while (!*window_closed);
+    std::cout << "Window closed\n";
 
     delete img;
     delete data;

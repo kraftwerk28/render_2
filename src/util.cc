@@ -151,12 +151,12 @@ vector3 vector3::norm()
     return vector3(x / l, y / l, z / l);
 }
 
-float vector3::length()
+float vector3::length() const
 {
     return (float) std::sqrt(x * x + y * y + z * z);
 }
 
-float vector3::angle(vector3 &vct1, vector3 &vct2)
+float vector3::angle(const vector3 &vct1, const vector3 &vct2)
 {
     return acosf(
         vector3::dot(vct1, vct2) /
@@ -180,8 +180,7 @@ plane::plane()
 plane::plane(vector3 &_v1, vector3 &_v2, vector3 &_v3)
     : v1(&_v1), v2(&_v2), v3(&_v3) {}
 
-plane::plane(const plane &p)
-    : v1(p.v1), v2(p.v2), v3(p.v3) {}
+plane::plane(const plane &p) = default;
 // endregion
 
 
@@ -200,6 +199,4 @@ camera::camera(vector3 _pos, vector3 _dir, int _res_x, int _res_y,
 // endregion
 
 light_source::light_source()
-{
-
-}
+= default;

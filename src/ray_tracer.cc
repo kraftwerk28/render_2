@@ -19,26 +19,22 @@ void ray_tracer::trace_to_image(obj_data *_obj_data, camera *_camera,
         right = vector3::cross(_camera->look_direction,
                                _camera->upwards).norm();
 
-    for (int y = _camera->resolution_y - 1; y >= 0; y--)
+    for (int y = 0; y < _camera->resolution_y; y++)
     {
         for (int x = 0; x < _camera->resolution_x; x++)
         {
             float
-                real_x =
-                (x - _camera->resolution_x / 2.f) /
-                (float) _camera->resolution_x,
-                real_y =
-                (y - _camera->resolution_y / 2.f) /
-                (float) _camera->resolution_y;
+                real_x = (x - w / 2.0f) / (float) w,
+
+                real_y = (y - h / 2.0f) / (float) h;
+
             vector3
-                dx =
-                right * real_x,
+                dx = right * real_x,
 
                 dy =
                 vector3::cross(right, _camera->look_direction).norm() * real_y,
 
-                ray_dir =
-                dx + dy + _camera->look_direction;
+                ray_dir = dx + dy + _camera->look_direction;
 
             size_t i = 0;
 
@@ -50,16 +46,22 @@ void ray_tracer::trace_to_image(obj_data *_obj_data, camera *_camera,
                     _obj_data->planes[i]
                 );
 
-                if (get<0>(res))
+                if (get<0>(res) &&
+                    vector3::angle(get<2>(res), ray_dir) > M_PI_2)
                 {
-                    _sf_image->setPixel((_uint) x, (_uint) y,
-                                        sf::Color::Yellow);
+                    const auto k =
+                        (sf::Uint8) (
+                            (float) vector3::angle(get<2>(res), ray_dir) /
+                            (float) M_PI *
+                            255);
+                    auto color = sf::Color(k, k, k);
+                    _sf_image->setPixel((_uint) x, (_uint) y, color);
                     break;
                 }
             }
             if (i >= _obj_data->planes.size())
             {
-                _sf_image->setPixel((_uint) x, (_uint) y, sf::Color::Green);
+                _sf_image->setPixel((_uint) x, (_uint) y, sf::Color::Black);
             }
         }
     }
