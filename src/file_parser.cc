@@ -45,8 +45,10 @@ void file_parser::parse(const char *path, obj_data &data)
     data.vertices.shrink_to_fit();
 
     cout << "Parsing finished\n";
-    file_stream.close();
+    cout << "total vertices: " << data.vertices.size() << ";\ntotal facets: "
+         << data.planes.size() << ";\n";
 
+    file_stream.close();
 }
 
 vector3 file_parser::parse_vector(string &str)
@@ -58,7 +60,7 @@ vector3 file_parser::parse_vector(string &str)
         sy = (float) strtod(spl[2].c_str(), nullptr),
         sz = (float) strtod(spl[3].c_str(), nullptr);
 
-    cout << sx << " " << sy << " " << sz << endl;
+//    cout << sx << " " << sy << " " << sz << endl;
 
     return vector3(sx, sy, sz);
 }
