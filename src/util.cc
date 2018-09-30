@@ -86,6 +86,60 @@ intersection(vector3 &origin, vector3 &direction, plane &facet)
     return {tt > E, res, normal};
 }
 
+bool box_intersection(std::pair<vector3, vector3> &bounds, vector3 &origin,
+                      vector3 &direction)
+{
+    vector3 min = bounds.first, max = bounds.second;
+    float
+        tmin = (min.x - origin.x) / direction.x,
+        tmax = (max.x - origin.x) / direction.x;
+
+    if (tmin > tmax)
+        _swap(tmin, tmax);
+
+    float
+        tymin = (min.y - origin.y) / direction.y,
+        tymax = (max.y - origin.y) / direction.y;
+
+    if (tymin > tymax)
+        _swap(tymin, tymax);
+
+    if ((tmin > tymax) || (tymin > tmax))
+        return false;
+
+    if (tymin > tmin)
+        tmin = tymin;
+
+    if (tymax < tmax)
+        tmax = tymax;
+
+    float
+        tzmin = (min.z - origin.z) / direction.z,
+        tzmax = (max.z - origin.z) / direction.z;
+
+    if (tzmin > tzmax)
+        _swap<float>(tzmin, tzmax);
+
+    if ((tmin > tzmax) || (tzmin > tmax))
+        return false;
+
+    if (tzmin > tmin)
+        tmin = tzmin;
+
+    if (tzmax < tmax)
+        tmax = tzmax;
+
+    return true;
+}
+
+template<class t>
+void _swap(t &val1, t &val2)
+{
+    t temp = val1;
+    val1 = val2;
+    val2 = temp;
+}
+
 // region vector3
 
 vector3::vector3()

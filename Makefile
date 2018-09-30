@@ -1,4 +1,12 @@
-all: bin/main.o bin/ray_tracer.o bin/file_parser.o bin/sfml_visualizer.o bin/util.o bin/util.o bin/test_util.o
+all: \
+bin/main.o \
+bin/ray_tracer.o \
+bin/file_parser.o \
+bin/sfml_visualizer.o \
+bin/util.o \
+bin/util.o \
+bin/test_util.o \
+bin/bsp_tree.o
 	g++ -o bin/render2 \
 	bin/main.o \
 	bin/ray_tracer.o \
@@ -22,6 +30,9 @@ bin/file_parser.o: src/file_parser.cc
 
 bin/ray_tracer.o: src/ray_tracer.cc
 	g++ -c src/ray_tracer.cc -o bin/ray_tracer.o
+
+bin/bsp_tree.o: src/bsp_tree.cc
+	g++ -c src/bsp_tree.cc -o bin/bsp_tree.o
 
 # tests
 bin/test_util.o: tests/util_test.cc

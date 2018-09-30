@@ -88,4 +88,12 @@ struct obj_data
 std::tuple<bool, vector3, vector3>
 intersection(vector3 &origin, vector3 &direction, plane &facet);
 
+template<class t>
+void _swap(t &val1, t &val2);
+
+//void swap(float &val1, float &val2);
+
+bool box_intersection(std::pair<vector3, vector3> &bounds, vector3 &origin,
+                      vector3 &direction);
+
 #endif //RENDER_2_UTIL_H

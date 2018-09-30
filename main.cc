@@ -1,17 +1,20 @@
 #include <iostream>
 #include <thread>
 #include <functional>
+#include <unistd.h>
 
 #include "tests/util_test.h"
 #include "include/sfml_visualizer.h"
 #include "include/file_parser.h"
 #include "include/ray_tracer.h"
 
-#define TEST_MODE 0
+#define TEST_MODE 1
 
 int main()
 {
     auto *window_closed = new bool(false);
+    auto *render_pending = new bool(true);
+    auto *progress = new float(0);
 //    bool window_closed = false;
 
     if (TEST_MODE)
@@ -29,22 +32,34 @@ int main()
     std::cout << "---------------\n" << "Render 2" << std::endl;
 
     auto *data = new obj_data();
-    auto *camera1 = new camera(vector3(5, 0.5f, 0), vector3(-1, -0.2f, -0.1f), w, h,
-                               60);
+    auto *camera1 = new camera(vector3(5, -5, 5),
+                               vector3(-1, 1, -1), w, h, 60);
 
-    file_parser::parse("sphere.obj", *data);
+    file_parser::parse("obj/sphere.obj", *data);
 
-    std::thread thread;
-    thread = std::thread(
+    auto *t_sfml_window = new std::thread(
         [=] {
             sfml_visualizer::create_window(w, h, img, window_closed);
         });
 
-    ray_tracer::trace_to_image(data, camera1, img);
-    img->saveToFile("result.png");
-    std::cout << "Image saved!\n";
+    auto t_tracer = new std::thread(
+        [=] {
+            ray_tracer::trace_to_image(data, camera1, img, progress,
+                                       render_pending);
+        });
 
-    thread.join();
+    while (*render_pending)
+    {
+        std::cout << "\r" << std::roundf(*progress * 100) << " %";
+        if (*window_closed)
+            *render_pending = false;
+    }
+
+    img->saveToFile("result.png");
+    std::cout << "\nImage saved!\n";
+
+    t_tracer->join();
+    t_sfml_window->join();
     while (!*window_closed);
     std::cout << "Window closed\n";
 
@@ -52,6 +67,10 @@ int main()
     delete data;
     delete camera1;
     delete window_closed;
+    delete render_pending;
+    delete progress;
+    delete t_sfml_window;
+    delete t_tracer;
 
     return 0;
 

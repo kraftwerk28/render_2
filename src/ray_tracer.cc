@@ -10,9 +10,12 @@ using std::tuple;
 using std::get;
 
 void ray_tracer::trace_to_image(obj_data *_obj_data, camera *_camera,
-                                sf::Image *_sf_image)
+                                sf::Image *_sf_image,
+                                float *progres,
+                                bool *render_pending)
 {
     int w = _camera->resolution_x, h = _camera->resolution_y;
+    int total = w * h;
     float distance = _camera->size / (2 * tanf(to_rad(_camera->fov) / 2));
     vector3
         plane_vec = _camera->look_direction.norm() * distance,
@@ -23,6 +26,8 @@ void ray_tracer::trace_to_image(obj_data *_obj_data, camera *_camera,
     {
         for (int x = 0; x < _camera->resolution_x; x++)
         {
+            _uint coord_x = _camera->resolution_x - x - 1,
+                coord_y = _camera->resolution_y - y - 1;
             float
                 real_x = (x - w / 2.0f) / (float) w,
 
@@ -55,15 +60,23 @@ void ray_tracer::trace_to_image(obj_data *_obj_data, camera *_camera,
                             (float) M_PI *
                             255);
                     auto color = sf::Color(k, k, k);
-                    _sf_image->setPixel((_uint) x, (_uint) y, color);
+                    _sf_image->setPixel(coord_x, coord_y, color);
                     break;
                 }
             }
             if (i >= _obj_data->planes.size())
             {
-                _sf_image->setPixel((_uint) x, (_uint) y, sf::Color::Black);
+                _sf_image->setPixel(coord_x, coord_y, sf::Color::Black);
             }
+
+            if (progres)
+                *progres = ((float) x + (float) y * w) / total;
+
+            if (!*render_pending)
+                return;
         }
     }
+    if (render_pending)
+        *render_pending = false;
 }
 

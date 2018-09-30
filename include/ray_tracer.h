@@ -13,7 +13,10 @@
 class ray_tracer
 {
 public:
-    static void trace_to_image(obj_data *, camera *, sf::Image *);
+    static void
+    trace_to_image(obj_data *, camera *, sf::Image *,
+                   float *progres = nullptr,
+                   bool *render_pending = nullptr);
 };
 
 #endif //RENDER_2_RAY_TRACER_HPP
