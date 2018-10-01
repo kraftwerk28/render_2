@@ -6,6 +6,8 @@
 
 using namespace std;
 
+// region stuff
+
 float to_rad(float deg)
 {
     return (float) (deg * M_PI / 180);
@@ -140,6 +142,37 @@ void _swap(t &val1, t &val2)
     val2 = temp;
 }
 
+template<class T>
+T *get_max(T *elements, size_t count, bool (*functor)(T, T))
+{
+    size_t max = 0;
+
+    for (size_t i = 1; i < count; i++)
+    {
+        if (functor(*(elements + max), elements[i]))
+        {
+            max = i;
+        }
+    }
+
+    return elements + max;
+}
+
+template<class T, class U>
+T *map(T *ptr, size_t count, U (*functor)(T, size_t))
+{
+    U *result = new U[count];
+
+    for (size_t i = 0; i < count; i++)
+    {
+        result[i] = functor(ptr[i], i);
+    }
+
+    return result;
+}
+
+// endregion
+
 // region vector3
 
 vector3::vector3()
@@ -224,7 +257,6 @@ void vector3::print()
 }
 
 // endregion
-
 
 // region plane
 

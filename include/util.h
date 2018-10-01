@@ -96,4 +96,10 @@ void _swap(t &val1, t &val2);
 bool box_intersection(std::pair<vector3, vector3> &bounds, vector3 &origin,
                       vector3 &direction);
 
+template<class T>
+T *get_max(T *elements, size_t count, bool (*functor)(T el1, T el2));
+
+template<class T, class U>
+T *map(T *ptr, size_t count, U (*functor)(T, size_t));
+
 #endif //RENDER_2_UTIL_H

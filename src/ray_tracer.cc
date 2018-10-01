@@ -4,6 +4,8 @@
 
 #include "../include/ray_tracer.h"
 
+#define THRESHOLD 64
+
 typedef unsigned int _uint;
 
 using std::tuple;
@@ -14,6 +16,11 @@ void ray_tracer::trace_to_image(obj_data *_obj_data, camera *_camera,
                                 float *progres,
                                 bool *render_pending)
 {
+    std::cout << "Building BSP tree...\n";
+    auto tree = bsp_tree();
+    tree.build(_obj_data, THRESHOLD);
+    std::cout << "BSP tree building finished\n";
+
     int w = _camera->resolution_x, h = _camera->resolution_y;
     int total = w * h;
     float distance = _camera->size / (2 * tanf(to_rad(_camera->fov) / 2));

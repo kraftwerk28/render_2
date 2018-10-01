@@ -45,7 +45,7 @@ void file_parser::parse(const char *path, obj_data &data)
     data.vertices.shrink_to_fit();
 
     cout << "Parsing finished\n";
-    cout << "total vertices: " << data.vertices.size() << ";\ntotal facets: "
+    cout << "total vert_indexes: " << data.vertices.size() << ";\ntotal facets: "
          << data.planes.size() << ";\n";
 
     file_stream.close();

@@ -18,12 +18,14 @@ struct bsp_node
 
     bsp_node();
 
-    bsp_node(std::vector <vector3> *vertices, _uint _vert_start, _uint _vert_count,
-                 vector3 bound1, vector3 bound2);
+    ~bsp_node();
 
-    unsigned int vertices_count = 0;
+    bsp_node(_uint *_vert_indexes, _uint _vert_count,
+             vector3 bound1, vector3 bound2);
 
-    vector3 *vertices = nullptr;
+    _uint verts_count = 0;
+
+    _uint *vert_indexes = nullptr;
 
     std::pair<vector3, vector3> bounds;
 };
@@ -31,11 +33,11 @@ struct bsp_node
 class bsp_tree
 {
 private:
-    std::pair<float, float> bounds_x(_uint start, _uint count);
+    std::pair<float, float> bounds_x(vector3 *ptr, _uint count);
 
-    std::pair<float, float> bounds_y(_uint start, _uint count);
+    std::pair<float, float> bounds_y(vector3 *ptr, _uint count);
 
-    std::pair<float, float> bounds_z(_uint start, _uint count);
+    std::pair<float, float> bounds_z(vector3 *ptr, _uint count);
 
     void divide(bsp_node *_node);
 
@@ -47,6 +49,8 @@ private:
 
 public:
     bsp_tree();
+
+    ~bsp_tree();
 
     void build(obj_data *_obj_data, unsigned int _threshold = 64);
 };

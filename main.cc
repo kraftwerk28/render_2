@@ -8,7 +8,7 @@
 #include "include/file_parser.h"
 #include "include/ray_tracer.h"
 
-#define TEST_MODE 1
+#define TEST_MODE 0
 
 int main()
 {

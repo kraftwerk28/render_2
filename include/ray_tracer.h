@@ -6,9 +6,11 @@
 #define RENDER_2_RAY_TRACER_HPP
 
 #include <SFML/Graphics/Image.hpp>
-#include "util.h"
 #include <math.h>
 #include <tuple>
+
+#include "util.h"
+#include "bsp_tree.h"
 
 class ray_tracer
 {
