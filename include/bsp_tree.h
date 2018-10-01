@@ -10,14 +10,16 @@
 
 #include "util.h"
 
+typedef unsigned int _uint;
+
 struct bsp_node
 {
     bsp_node *children[4];
 
     bsp_node();
 
-    bsp_node(unsigned int _vertices_count, vector3 *_vertices_ptr,
-             vector3 bound1, vector3 bound2);
+    bsp_node(std::vector <vector3> *vertices, _uint _vert_start, _uint _vert_count,
+                 vector3 bound1, vector3 bound2);
 
     unsigned int vertices_count = 0;
 
@@ -29,12 +31,24 @@ struct bsp_node
 class bsp_tree
 {
 private:
+    std::pair<float, float> bounds_x(_uint start, _uint count);
+
+    std::pair<float, float> bounds_y(_uint start, _uint count);
+
+    std::pair<float, float> bounds_z(_uint start, _uint count);
+
     void divide(bsp_node *_node);
+
+    obj_data *data = nullptr;
+
+    unsigned int threshold = 0;
+
+    bsp_node *root = nullptr;
 
 public:
     bsp_tree();
 
-    void build(const obj_data &_obj_data, int vert_threshold = 64);
+    void build(obj_data *_obj_data, unsigned int _threshold = 64);
 };
 
 #endif //RENDER_2_BSP_TREE_H
