@@ -3,5 +3,5 @@ project(render_2)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(render_2 main.cc src/util.cpp include/util.hpp src/sfml_visualizer.cpp include/sfml_visualizer.hpp tests/util_test.cc tests/util_test.h include/file_parser.hpp src/file_parser.cpp include/ray_tracer.hpp src/ray_tracer.cpp include/bsp_tree.hpp src/bsp_tree.cpp)
+add_executable(render_2 main.cc src/util.cc include/util.h src/sfml_visualizer.cc include/sfml_visualizer.h tests/util_test.cc tests/util_test.h include/file_parser.h src/file_parser.cc include/ray_tracer.h src/ray_tracer.cc include/bsp_tree.h src/bsp_tree.cc)
 target_link_libraries(render_2 -lsfml-system -lsfml-window -lsfml-graphics -lpthread)

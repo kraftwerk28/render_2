@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <functional>
 
-#include "util.hpp"
+#include "util.h"
 
 typedef unsigned int _uint;
 

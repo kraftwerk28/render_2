@@ -2,7 +2,7 @@
 // Created by kraftwerk28 on 22.09.18.
 //
 
-#include "../include/sfml_visualizer.hpp"
+#include "../include/sfml_visualizer.h"
 #include <unistd.h>
 #include <thread>
 #include <iostream>

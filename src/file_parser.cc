@@ -2,7 +2,7 @@
 // Created by kraftwerk28 on 22.09.18.
 //
 
-#include "../include/file_parser.hpp"
+#include "../include/file_parser.h"
 
 #define VECTOR_DESCR "v"
 #define PLANE_DESCR "f"

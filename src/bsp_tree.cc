@@ -4,7 +4,7 @@
 // Created by kraftwerk28 on 29.09.18.
 //
 
-#include "../include/bsp_tree.hpp"
+#include "../include/bsp_tree.h"
 
 using std::pair;
 using std::vector;

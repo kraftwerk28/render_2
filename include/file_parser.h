@@ -8,8 +8,8 @@
 #include <fstream>
 #include <iostream>
 #include <string.h>
-#include "file_parser.hpp"
-#include "util.hpp"
+#include "file_parser.h"
+#include "util.h"
 
 class file_parser
 {

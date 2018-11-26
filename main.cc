@@ -4,9 +4,9 @@
 #include <unistd.h>
 
 #include "tests/util_test.h"
-#include "include/sfml_visualizer.hpp"
-#include "include/file_parser.hpp"
-#include "include/ray_tracer.hpp"
+#include "include/sfml_visualizer.h"
+#include "include/file_parser.h"
+#include "include/ray_tracer.h"
 
 #define TEST_MODE 0
 

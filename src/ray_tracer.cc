@@ -2,7 +2,7 @@
 // Created by kraftwerk28 on 24.09.18.
 //
 
-#include "../include/ray_tracer.hpp"
+#include "../include/ray_tracer.h"
 
 #define THRESHOLD 100
 

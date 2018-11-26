@@ -19,19 +19,19 @@ bin/test_util.o
 bin/main.o: main.cpp
 	g++ -c main.cpp -o bin/main.o
 
-bin/util.o: src/util.cpp
+bin/util.o: src/util.cc
 	g++ -c src/util.cpp -o bin/util.o
 
-bin/sfml_visualizer.o: src/sfml_visualizer.cpp
+bin/sfml_visualizer.o: src/sfml_visualizer.cc
 	g++ -c src/sfml_visualizer.cpp -o bin/sfml_visualizer.o
 
-bin/file_parser.o: src/file_parser.cpp
+bin/file_parser.o: src/file_parser.cc
 	g++ -c src/file_parser.cpp -o bin/file_parser.o
 
-bin/bsp_tree.o: src/bsp_tree.cpp
+bin/bsp_tree.o: src/bsp_tree.cc
 	g++ -c src/bsp_tree.cpp -o bin/bsp_tree.o
 
-bin/ray_tracer.o: src/ray_tracer.cpp
+bin/ray_tracer.o: src/ray_tracer.cc
 	g++ -c src/ray_tracer.cpp -o bin/ray_tracer.o
 
 # tests
