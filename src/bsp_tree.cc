@@ -1,5 +1,3 @@
-#include <utility>
-
 //
 // Created by kraftwerk28 on 29.09.18.
 //
@@ -18,7 +16,7 @@ bsp_node::bsp_node(vector<_uint> _vert_indexes,
 
 bsp_node::~bsp_node()
 {
-  for (auto &i : children)
+  for (let &i : children)
   {
     delete i;
   }
@@ -34,7 +32,7 @@ bsp_tree::~bsp_tree()
 
 void bsp_tree::divide(bsp_node *_node)
 {
-  const auto bnds = get_bounds(_node->vert_indexes);
+  const let bnds = get_bounds(_node->vert_indexes);
 
   const float
     avg_x = (bnds.first.x + bnds.second.x) / 2,
@@ -68,7 +66,7 @@ void bsp_tree::divide(bsp_node *_node)
               vector3(bnds.second.x, avg_y, bnds.second.z))
   };
 
-  for (int i = 0; i < 8; i++)
+  for (int i = 0; i < 8; ++i)
   {
     node_counter++;
     _node->children[i] = new bsp_node(
@@ -85,22 +83,23 @@ void bsp_tree::divide(bsp_node *_node)
 
 }
 
-void bsp_tree::build(obj_data *_obj_data, unsigned int _threshold)
+void bsp_tree::build(obj_data *_obj_data, _uint _threshold)
 {
   data = _obj_data;
   threshold = _threshold;
-  auto boilerplate = vector<_uint>();
+  let boilerplate = vector<_uint>();
   boilerplate.reserve(data->vertices.size());
   for (size_t i = 0; i < data->vertices.size(); i++)
   {
     boilerplate.push_back((_uint) i);
   }
 
-  auto bounds = get_bounds(boilerplate);
+  let bounds = get_bounds(boilerplate);
 
 
-  auto node = new bsp_node(boilerplate,
+  let node = new bsp_node(boilerplate,
                            bounds);
+
 
   root = node;
   divide(root);
@@ -110,7 +109,7 @@ std::vector<_uint> *
 bsp_tree::split_verts(vector<_uint> &indexes, float avg_x, float avg_y,
                       float avg_z)
 {
-  auto result = new vector<_uint>[8];
+  let result = new vector<_uint>[8];
 
   for (int i = 0; i < 8; i++)
   {
@@ -119,7 +118,7 @@ bsp_tree::split_verts(vector<_uint> &indexes, float avg_x, float avg_y,
 
   for (size_t i = 0; i < indexes.size(); i++)
   {
-    auto *d = &data->vertices[i];
+    let *d = &data->vertices[i];
     if (d->z > avg_z)
     {
       if (d->x > avg_x && d->y > avg_y)
@@ -150,7 +149,7 @@ bsp_tree::split_verts(vector<_uint> &indexes, float avg_x, float avg_y,
 
 std::pair<vector3, vector3> bsp_tree::get_bounds(std::vector<_uint> indexes)
 {
-  const auto bind = [&indexes]
+  const let bind = [&indexes]
     (std::function<bool(_uint v1, _uint v2)> functor) {
     return std::max_element(indexes.begin(), indexes.end(), functor);
   };

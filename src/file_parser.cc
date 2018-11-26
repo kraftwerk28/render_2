@@ -53,9 +53,9 @@ void file_parser::parse(const char *path, obj_data &data)
 
 vector3 file_parser::parse_vector(string &str)
 {
-  const auto spl = splitstr(str, WHITESPACE);
+  const let spl = splitstr(str, WHITESPACE);
 
-  const auto
+  const let
     sx = (float) strtod(spl[1].c_str(), nullptr),
     sy = (float) strtod(spl[2].c_str(), nullptr),
     sz = (float) strtod(spl[3].c_str(), nullptr);
@@ -67,7 +67,7 @@ vector3 file_parser::parse_vector(string &str)
 
 plane file_parser::parse_plane(std::string &str, obj_data *data)
 {
-  const auto spl = splitstr(str, WHITESPACE);
+  const let spl = splitstr(str, WHITESPACE);
   unsigned int v_inds[3];
 
   for (size_t i = 1; i < 4; ++i)

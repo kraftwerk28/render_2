@@ -18,11 +18,11 @@ void ray_tracer::trace_to_image(
   bool *render_pending
 )
 {
-//  std::cout << "Building BSP tree...\n";
-//  auto tree = bsp_tree();
-//  tree.build(_obj_data, THRESHOLD);
-//  std::cout << "BSP tree building finished. Total bsp_nodes: "
-//            << tree.node_counter << ".\n";
+  std::cout << "Building BSP tree...\n";
+  let tree = bsp_tree();
+  tree.build(_obj_data, THRESHOLD);
+  std::cout << "BSP tree building finished. Total bsp_nodes: "
+            << tree.node_counter << ".\n";
 
   int w = _camera->resolution_x, h = _camera->resolution_y;
   int total = w * h;
@@ -55,7 +55,7 @@ void ray_tracer::trace_to_image(
 
       for (; i < _obj_data->planes.size(); ++i)
       {
-        const auto res = intersection(
+        const let res = intersection(
           _camera->position,
           ray_dir,
           _obj_data->planes[i]
@@ -64,13 +64,13 @@ void ray_tracer::trace_to_image(
         if (get<0>(res) &&
             vector3::angle(get<2>(res), ray_dir) > M_PI_2)
         {
-          const auto k =
+          const let k =
             (sf::Uint8) (
               (vector3::angle(get<2>(res), ray_dir) - (float)M_PI_2) /
               (float) M_PI_2 * 255
             );
 //          std::cout << to_deg(vector3::angle(get<2>(res), ray_dir)) << std::endl;
-          auto color = sf::Color(k, k, k);
+          let color = sf::Color(k, k, k);
           _sf_image->setPixel(coord_x, coord_y, color);
           break;
         }
