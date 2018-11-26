@@ -9,8 +9,8 @@
 #include <math.h>
 #include <tuple>
 
-#include "util.h"
-#include "bsp_tree.h"
+#include "util.hpp"
+#include "bsp_tree.hpp"
 
 class ray_tracer
 {

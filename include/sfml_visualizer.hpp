@@ -7,7 +7,7 @@
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-#include "util.h"
+#include "util.hpp"
 
 using sf::Window;
 using sf::Event;
@@ -17,9 +17,11 @@ using sf::Vector2i;
 class sfml_visualizer
 {
 public:
-    static void
-    create_window(unsigned int w, unsigned int h, sf::Image *image,
-                  bool *close_trigger);
+  static void
+  create_window(unsigned int w,
+                unsigned int h,
+                sf::Image *image,
+                bool *close_trigger);
 };
 
 

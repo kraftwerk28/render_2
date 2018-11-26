@@ -9,10 +9,42 @@
 #include <cmath>
 #include <vector>
 #include <tuple>
+#include <functional>
+
+typedef unsigned int _uint;
 
 float to_rad(float);
 
 float to_deg(float);
+
+template<class T>
+T *get_max(T *elements, size_t count, std::function<bool(T, T)> functor)
+{
+    size_t max = 0;
+
+    for (size_t i = 1; i < count; i++)
+    {
+        if (functor(*(elements + max), elements[i]))
+        {
+            max = i;
+        }
+    }
+
+    return elements + max;
+}
+
+template<class T, class U>
+T *map(T *ptr, size_t count, std::function<U(T, size_t)> functor)
+{
+    U *result = new U[count];
+
+    for (size_t i = 0; i < count; i++)
+    {
+        result[i] = functor(ptr[i], i);
+    }
+
+    return result;
+}
 
 struct vector3
 {
@@ -95,11 +127,5 @@ void _swap(t &val1, t &val2);
 
 bool box_intersection(std::pair<vector3, vector3> &bounds, vector3 &origin,
                       vector3 &direction);
-
-template<class T>
-T *get_max(T *elements, size_t count, bool (*functor)(T el1, T el2));
-
-template<class T, class U>
-T *map(T *ptr, size_t count, U (*functor)(T, size_t));
 
 #endif //RENDER_2_UTIL_H
