@@ -105,9 +105,9 @@ struct camera
          float _fov = 60, float _size = 1);
 };
 
-struct light_source
+struct lightSource
 {
-  light_source();
+  lightSource();
 
   vector3 position;
   float strength;

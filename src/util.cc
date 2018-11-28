@@ -147,10 +147,12 @@ void _swap(t &val1, t &val2)
 // region vector3
 
 vector3::vector3()
-  : x(0), y(0), z(0) {}
+  : x(0), y(0), z(0)
+{}
 
 vector3::vector3(const float _x, const float _y, const float _z)
-  : x(_x), y(_y), z(_z) {}
+  : x(_x), y(_y), z(_z)
+{}
 
 //vector3::vector3(const float &_x, const float &_y, const float &_z)
 //    : x(_x), y(_y), z(_z) {}
@@ -232,10 +234,12 @@ void vector3::print()
 // region plane
 
 plane::plane()
-  : v1(new vector3()), v2(new vector3()), v3(new vector3()) {}
+  : v1(new vector3()), v2(new vector3()), v3(new vector3())
+{}
 
 plane::plane(vector3 &_v1, vector3 &_v2, vector3 &_v3)
-  : v1(&_v1), v2(&_v2), v3(&_v3) {}
+  : v1(&_v1), v2(&_v2), v3(&_v3)
+{}
 
 plane::plane(const plane &p) = default;
 // endregion
@@ -251,11 +255,12 @@ camera::camera(vector3 _pos, vector3 _dir, int _res_x, int _res_y,
     resolution_y(_res_y),
     fov(_fov),
     size(_size),
-    upwards(vector3(0, 0, 1)) {}
+    upwards(vector3(0, 0, 1))
+{}
 
 // endregion
 
-light_source::light_source()
+lightSource::lightSource()
 = default;
 
 

@@ -34,7 +34,7 @@ int main()
   let *camera1 = new camera(vector3(5, -5, 5),
                             vector3(-1, 1, -1), w, h, 60);
 
-  file_parser::parse("obj/sphere.obj", *data);
+  file_parser::parse("obj/cube_2.obj", *data);
 
   let *t_sfml_window = new std::thread(
     [=] {
